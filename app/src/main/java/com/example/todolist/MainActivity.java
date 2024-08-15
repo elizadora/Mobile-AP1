@@ -1,9 +1,11 @@
 package com.example.todolist;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView rvTarefas;
     Button btnCriar;
+    ImageButton ibDelete;
 
 
     List<Tarefa> tarefasDoBd;
@@ -38,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        btnCriar = findViewById(R.id.btn_criar);
+        btnCriar = (Button) findViewById(R.id.btn_criar);
+        ibDelete = (ImageButton) findViewById(R.id.ib_delete);
 
         rvTarefas = findViewById(R.id.rv_tarefas);
         itemArrayAdapter = new ItemArrayAdapter(R.layout.item, itemList);
@@ -46,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
         rvTarefas = (RecyclerView) findViewById(R.id.rv_tarefas);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rvTarefas.setLayoutManager(layoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
 
-        rvTarefas.addItemDecoration(dividerItemDecoration);
+//        rvTarefas.addItemDecoration(dividerItemDecoration);
 
         rvTarefas.setAdapter(itemArrayAdapter);
 
@@ -75,6 +79,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent call = new Intent(MainActivity.this, SecondaryActivity.class);
                 startActivity(call);
+            }
+        });
+
+
+        ibDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tarefaDao.deleteAll();
+
+                tarefasDoBd.clear();
+                itemList.clear();
+
+                itemArrayAdapter.notifyDataSetChanged();
+
             }
         });
     }

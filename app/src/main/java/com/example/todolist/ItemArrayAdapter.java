@@ -1,8 +1,10 @@
 package com.example.todolist;
 
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,13 +49,28 @@ public class ItemArrayAdapter extends  RecyclerView.Adapter<ItemArrayAdapter.Vie
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView itemTitulo;
         public TextView itemDescricao;
+        public CheckBox btnConcluir;
 
         public ViewHolder(View itemView){
             super(itemView);
             itemView.setOnClickListener(this);
             itemTitulo = (TextView) itemView.findViewById(R.id.item_titulo);
             itemDescricao = (TextView) itemView.findViewById(R.id.item_descricao);
+            btnConcluir = (CheckBox) itemView.findViewById(R.id.btn_concluir);
+
+
+            btnConcluir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(btnConcluir.isChecked()){
+                        itemTitulo.setPaintFlags(itemTitulo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    }else{
+                        itemTitulo.setPaintFlags(itemTitulo.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                    }
+                }
+            });
         }
+
 
         @Override
         public void onClick(View v) {
